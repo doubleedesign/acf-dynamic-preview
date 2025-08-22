@@ -1,0 +1,98 @@
+@mixin edit-mode() {
+	margin-block: 1.5rem;
+	border: 1px solid #CCC;
+
+	.acf-dynamic-fc-preview {
+		display: none;
+	}
+
+	.acf-fc-layout-actions-wrap,
+	.acf-dynamic-fc-extra-actions {
+		display: flex;
+	}
+
+	.acf-fields {
+		display: block;
+	}
+}
+
+@mixin preview-mode() {
+	margin-top: 0;
+	border: 0;
+
+	.acf-fc-layout-actions-wrap,
+	.acf-fields,
+	.acf-dynamic-fc-extra-actions {
+		display: none;
+	}
+
+	.acf-dynamic-fc-preview {
+		display: block;
+	}
+}
+
+// Going from the parent .acf-field for specificity reasons
+.acf-field[data-type="flexible_content"] .acf-flexible-content {
+	.layout {
+		// Default to preview mode when the page loads
+		@include preview-mode();
+
+		&[data-mode="edit"] {
+			@include edit-mode();
+		}
+
+		.acf-dynamic-fc-extra-actions {
+			padding: 0.5rem;
+			background: #f6f7f7;
+			justify-content: flex-end;
+
+			a {
+				text-decoration: none;
+				color: inherit;
+			}
+		}
+
+		&.active-layout {
+			.acf-dynamic-fc-extra-actions {
+				background: rgba(34,113,177,.04);
+
+				a {
+					color: white;
+				}
+			}
+		}
+	}
+
+	.acf-dynamic-fc-preview {
+		position: relative;
+		min-height: 100px;
+		border: 0;
+
+		&__overlay-button {
+			appearance: none;
+			position: absolute;
+			inset: 0 0 0 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			opacity: 0;
+			cursor: pointer;
+			transition: all 0.2s ease-in-out;
+			border: 0 !important;
+			z-index: 700;
+
+			&:hover, &:focus {
+				opacity: 1;
+				background: rgba(255, 255, 255, 0.5);
+			}
+
+			&:hover {
+				border: 0;
+			}
+		}
+
+		&__content {
+
+		}
+	}
+}

@@ -1,0 +1,68 @@
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout {
+  margin-top: 0;
+  border: 0;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout .acf-fc-layout-actions-wrap,
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout .acf-fields,
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout .acf-dynamic-fc-extra-actions {
+  display: none;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout .acf-dynamic-fc-preview {
+  display: block;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout[data-mode=edit] {
+  margin-block: 1.5rem;
+  border: 1px solid #CCC;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout[data-mode=edit] .acf-dynamic-fc-preview {
+  display: none;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout[data-mode=edit] .acf-fc-layout-actions-wrap,
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout[data-mode=edit] .acf-dynamic-fc-extra-actions {
+  display: flex;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout[data-mode=edit] .acf-fields {
+  display: block;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout .acf-dynamic-fc-extra-actions {
+  padding: 0.5rem;
+  background: #f6f7f7;
+  justify-content: flex-end;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout .acf-dynamic-fc-extra-actions a {
+  text-decoration: none;
+  color: inherit;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout.active-layout .acf-dynamic-fc-extra-actions {
+  background: rgba(34, 113, 177, 0.04);
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout.active-layout .acf-dynamic-fc-extra-actions a {
+  color: white;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .acf-dynamic-fc-preview {
+  position: relative;
+  min-height: 100px;
+  border: 0;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .acf-dynamic-fc-preview__overlay-button {
+  appearance: none;
+  position: absolute;
+  inset: 0 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 0 !important;
+  z-index: 700;
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .acf-dynamic-fc-preview__overlay-button:hover, .acf-field[data-type=flexible_content] .acf-flexible-content .acf-dynamic-fc-preview__overlay-button:focus {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.5);
+}
+.acf-field[data-type=flexible_content] .acf-flexible-content .acf-dynamic-fc-preview__overlay-button:hover {
+  border: 0;
+}
+
+/*# sourceMappingURL=admin.css.map */
