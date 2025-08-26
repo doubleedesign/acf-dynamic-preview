@@ -71,6 +71,7 @@ function initButtons($) {
 		}
 		if(isEditButton) {
 			moduleArea.dataset.mode = 'edit';
+			moduleArea.classList.remove('-collapsed');
 		}
 	});
 }
