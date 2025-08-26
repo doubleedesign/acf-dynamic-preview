@@ -34,9 +34,16 @@ class TemplateHandler {
 		// Loop through each directory in the template paths and return the first match
 		$path = null;
 		foreach(self::$template_paths as $base_path) {
+			// In a subfolder per module, e.g. modules/hero/hero.php
 			$file = $base_path . $name . DIRECTORY_SEPARATOR . $name . '.php';
 			if(file_exists($file)) {
 				$path = $file;
+				break;
+			}
+			// In the main modules folder, e.g. modules/hero.php
+			// Or directly in the custom directory configured by a theme or plugin using the filter
+			else if(file_exists($base_path . $name . '.php')) {
+				$path = $base_path . $name . '.php';
 				break;
 			}
 		}
