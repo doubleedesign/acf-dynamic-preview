@@ -39,6 +39,10 @@
 
 		&[data-mode="edit"] {
 			@include edit-mode();
+
+			&.-collapsed .acf-fields {
+				display: none;
+			}
 		}
 
 		.acf-dynamic-fc-extra-actions {

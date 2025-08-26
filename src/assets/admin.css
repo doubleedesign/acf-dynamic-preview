@@ -24,6 +24,9 @@
 .acf-field[data-type=flexible_content] .acf-flexible-content .layout[data-mode=edit] .acf-fields {
   display: block;
 }
+.acf-field[data-type=flexible_content] .acf-flexible-content .layout[data-mode=edit].-collapsed .acf-fields {
+  display: none;
+}
 .acf-field[data-type=flexible_content] .acf-flexible-content .layout .acf-dynamic-fc-extra-actions {
   padding: 0.5rem;
   background: #f6f7f7;
