@@ -16,6 +16,16 @@ jQuery(document).ready(function($) {
 		// Default to edit mode
 		maybeModule[0].dataset.mode = 'edit';
 	});
+
+	// If WYSIWYG field (e.g., my "copy" module) is already on the page but is empty,
+	// default it to edit mode
+	acf.addAction('load_field/type=wysiwyg', function(field) {
+		const moduleArea = field.$el.closest('.layout')[0];
+		if(moduleArea && !field.val()) {
+			moduleArea.dataset.mode = 'edit';
+		}
+	});
+
 });
 
 function initButtons($) {
