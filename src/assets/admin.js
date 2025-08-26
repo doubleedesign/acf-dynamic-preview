@@ -50,11 +50,17 @@ function initButtons($) {
 				},
 				success: function(response) {
 					if(response.success && response.data.html) {
-						console.log(response.data.html);
+						// Replace the preview area's content with the returned HTML
 						previewArea.innerHTML = response.data.html;
+						// Remove error messages if any
+						const existingErrors = previewArea.querySelectorAll('.acf-notice');
+						existingErrors.forEach(error => error.remove());
 					}
 					else if(response.data.error) {
 						console.error(response.data.error);
+						// Clear previous errors
+						const existingErrors = previewArea.querySelectorAll('.acf-notice');
+						existingErrors.forEach(error => error.remove());
 						// Insert an error message above the preview area, so the preview of saved data stays there
 						const message = previewArea.appendChild(document.createElement('div'));
 						message.classList.add('acf-notice');
