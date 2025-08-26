@@ -3,6 +3,22 @@
  */
 
 jQuery(document).ready(function($) {
+	// Initialise the custom buttons' event listeners on page load
+	initButtons($);
+
+	// When a new module is added to the page
+	acf.addAction('append', function(maybeModule) {
+		// 'append' could also hit repeaters and such, so this is a proxy for "is this a flexible module?"
+		// Reinitialise button listeners - this probably isn't the most efficient, but it's fine for now
+		if(maybeModule[0].classList.contains('layout')) {
+			initButtons($);
+		}
+		// Default to edit mode
+		maybeModule[0].dataset.mode = 'edit';
+	});
+});
+
+function initButtons($) {
 	$('[data-action="toggle-render-mode"]').on('click', function(e) {
 		e.preventDefault();
 
@@ -57,7 +73,7 @@ jQuery(document).ready(function($) {
 			moduleArea.dataset.mode = 'edit';
 		}
 	});
-});
+}
 
 function merge_sub_field_data(inputs) {
 	const initial = [];
