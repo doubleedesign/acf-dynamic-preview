@@ -40,7 +40,10 @@ class BackendPreview {
 			if($file && !is_dir($file)) {
 				$html = $this->get_preview_html($file, [
 					'is_backend_preview' => true,
-					'fields' => $postData['fields'] ?? []
+					'fields' => [
+						'acf_fc_layout' => $postData['module_name'],
+						...$postData['fields'] ?? []
+					]
 				]);
 
 				wp_send_json_success(array(

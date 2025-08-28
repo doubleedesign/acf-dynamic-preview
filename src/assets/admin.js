@@ -17,13 +17,30 @@ jQuery(document).ready(function($) {
 		maybeModule[0].dataset.mode = 'edit';
 	});
 
-	// If WYSIWYG field (e.g., my "copy" module) is already on the page but is empty,
-	// default it to edit mode
+	// If certain WYSIWYG fields (e.g., my "copy" module) are already on the page but is empty,
+	// default them to edit mode
 	acf.addAction('load_field/type=wysiwyg', function(field) {
 		const moduleArea = field.$el.closest('.layout')[0];
-		if(moduleArea && !field.val()) {
+		if(moduleArea && moduleArea.dataset.layout === 'copy' && !field.val()) {
 			moduleArea.dataset.mode = 'edit';
 		}
+	});
+
+	// Hack in a "Preview all" button because ACF doesn't provide any filters to add this in PHP
+	$('.acf-fc-collapse-all').after('<button type="button" class="acf-btn acf-btn-clear acf-btn-preview-all">Preview all</button>');
+	$('.acf-btn-preview-all').on('click', function(e) {
+		const modules = document.querySelectorAll('.layout');
+		modules.forEach(module => {
+			module.dataset.mode = 'preview';
+		});
+	});
+
+	// Switch all modules to edit mode when ACF native "collapse all" or "expand all" button is clicked
+	$('.acf-fc-collapse-all, .acf-fc-expand-all').on('click', function(e) {
+		const modules = document.querySelectorAll('.layout');
+		modules.forEach(module => {
+			module.dataset.mode = 'edit';
+		});
 	});
 
 });
@@ -154,3 +171,15 @@ function build_nested_object(keys, value) {
 		return { [key]: build_nested_object(keys.slice(1), value) };
 	}
 }
+
+function are_all_modules_in_preview_mode() {
+	const modules = document.querySelectorAll('.layout');
+	for(const module of modules) {
+		if(module.dataset.mode !== 'preview') {
+			return false;
+		}
+	}
+
+	return true;
+}
+

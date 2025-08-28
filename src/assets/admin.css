@@ -11,7 +11,7 @@
   display: block;
 }
 .acf-field[data-type=flexible_content] .acf-flexible-content .layout[data-mode=edit] {
-  margin-block: 1.5rem;
+  margin-block: 1rem;
   border: 1px solid #CCC;
 }
 .acf-field[data-type=flexible_content] .acf-flexible-content .layout[data-mode=edit] .acf-dynamic-fc-preview {

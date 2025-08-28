@@ -380,6 +380,7 @@ class Layout {
         try {
             $file = TemplateHandler::get_template_path($layout['name']);
 			if($file && !is_dir($file)) {
+				$fields = get_row();
 				include $file;
 			}
         }
