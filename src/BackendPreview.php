@@ -5,7 +5,7 @@ use Exception;
 class BackendPreview {
 
     public function __construct() {
-	    add_action('admin_init', [$this, 'enqueue_assets']);
+	    add_action('admin_init', [$this, 'enqueue_assets'], 30);
 	    add_action('wp_ajax_fetch_module_preview', [$this, 'fetch_module_preview']);
     }
 
@@ -18,10 +18,12 @@ class BackendPreview {
         wp_enqueue_style('acf-dynamic-preview', "{$path}/admin.css", [], $version);
 
 		// Make variables available to JS via the ACF data object
-		acf_localize_data([
-			'dynamic_rendering' => [
-			]
-		]);
+		if(function_exists('acf_localize_data')) {
+			acf_localize_data([
+				'dynamic_rendering' => [
+				]
+			]);
+		}
 
 		// Nonce for AJAX interaction
 		wp_localize_script('acf-dynamic-preview', 'dynamic_rendering', [
