@@ -63,11 +63,11 @@ function initButtons($) {
 				url: ajaxurl, // WordPress AJAX URL
 				type: 'POST',
 				data: {
-					// This action name must match the PHP action hook, without the wp_ajax_ prefix
 					headers: {
 						'Content-Type': 'application/json',
 						'X-Requested-With': 'XMLHttpRequest'
 					},
+					// This action name must match the PHP action hook, without the wp_ajax_ prefix
 					action: 'fetch_module_preview',
 					nonce: dynamic_rendering.nonce,
 					body: JSON.stringify({
