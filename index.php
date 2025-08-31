@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:         ACF Dynamic Preview
- * Description:         Dynamic render and preview functionality for ACF flexible content modules, forked from the ACF Extended plugin.
+ * Description:         Dynamic render and preview functionality for ACF flexible content modules.
  * Version:             0.1.0
  * Requires PHP:        8.3
  * Requires plugins:    advanced-custom-fields-pro
