@@ -91,70 +91,70 @@ class Layout {
      * @return void
      */
     public function render(): void {
-	    $id = 'row-' . $this->order;
-	    $class = 'layout';
+        $id = 'row-' . $this->order;
+        $class = 'layout';
 
-	    if ($this->order === 'acfcloneindex') {
-		    $id = 'acfcloneindex';
-		    $class .= ' acf-clone';
-	    }
+        if ($this->order === 'acfcloneindex') {
+            $id = 'acfcloneindex';
+            $class .= ' acf-clone';
+        }
 
-	    $this->prefix = $this->field['name'] . '[' . $id . ']';
+        $this->prefix = $this->field['name'] . '[' . $id . ']';
 
-	    $div_attrs = array(
-		    'class'        => $class,
-		    'data-id'      => $id,
-		    'data-layout'  => $this->layout['name'],
-		    'data-label'   => $this->layout['label'],
-		    'data-min'     => $this->layout['min'],
-		    'data-max'     => $this->layout['max'],
-		    'data-enabled' => $this->disabled ? 0 : 1,
-		    'data-renamed' => empty($this->renamed) ? 0 : 1,
-	    );
+        $div_attrs = array(
+            'class'        => $class,
+            'data-id'      => $id,
+            'data-layout'  => $this->layout['name'],
+            'data-label'   => $this->layout['label'],
+            'data-min'     => $this->layout['min'],
+            'data-max'     => $this->layout['max'],
+            'data-enabled' => $this->disabled ? 0 : 1,
+            'data-renamed' => empty($this->renamed) ? 0 : 1,
+        );
 
-	    echo '<div ' . acf_esc_attrs($div_attrs) . '>';
-			// TODO: Can we avoid having all of these in the DOM at once and only render what's visible?
-			// Note: Unsaved data is a challenge for that.
-			$this->render_form();
-	   		$this->render_preview($this->layout['name']);
+        echo '<div ' . acf_esc_attrs($div_attrs) . '>';
+        // TODO: Can we avoid having all of these in the DOM at once and only render what's visible?
+        // Note: Unsaved data is a challenge for that.
+        $this->render_form();
+        $this->render_preview($this->layout['name']);
         echo '</div>'; // End layout wrapper div.
     }
 
-	private function render_form(): void {
-		acf_hidden_input(
-			array(
-				'name'  => $this->prefix . '[acf_fc_layout]',
-				'value' => $this->layout['name'],
-			)
-		);
+    private function render_form(): void {
+        acf_hidden_input(
+            array(
+                'name'  => $this->prefix . '[acf_fc_layout]',
+                'value' => $this->layout['name'],
+            )
+        );
 
-		acf_hidden_input(
-			array(
-				'class' => 'acf-fc-layout-disabled',
-				'name'  => $this->prefix . '[acf_fc_layout_disabled]',
-				'value' => $this->disabled ? 1 : 0,
-			)
-		);
+        acf_hidden_input(
+            array(
+                'class' => 'acf-fc-layout-disabled',
+                'name'  => $this->prefix . '[acf_fc_layout_disabled]',
+                'value' => $this->disabled ? 1 : 0,
+            )
+        );
 
-		acf_hidden_input(
-			array(
-				'class' => 'acf-fc-layout-custom-label',
-				'name'  => $this->prefix . '[acf_fc_layout_custom_label]',
-				'value' => $this->renamed,
-			)
-		);
+        acf_hidden_input(
+            array(
+                'class' => 'acf-fc-layout-custom-label',
+                'name'  => $this->prefix . '[acf_fc_layout_custom_label]',
+                'value' => $this->renamed,
+            )
+        );
 
-		$this->action_buttons();
+        $this->action_buttons();
 
-		if (!empty($this->layout['sub_fields'])) {
-			if ($this->layout['display'] === 'table') {
-				$this->render_as_table();
-			}
-			else {
-				$this->render_as_div();
-			}
-		}
-	}
+        if (!empty($this->layout['sub_fields'])) {
+            if ($this->layout['display'] === 'table') {
+                $this->render_as_table();
+            }
+            else {
+                $this->render_as_div();
+            }
+        }
+    }
 
     /**
      * Renders a layout as a table.
@@ -262,12 +262,14 @@ class Layout {
 		<?php
     }
 
-	/**
-	 * Renders the preview mode overlay and initial content (from saved data).
-	 * Previewing unsaved data is handled elsewhere - see BackendPreview.php
-	 * @param $module_name
-	 * @return void
-	 */
+    /**
+     * Renders the preview mode overlay and initial content (from saved data).
+     * Previewing unsaved data is handled elsewhere - see BackendPreview.php
+     *
+     * @param  $module_name
+     *
+     * @return void
+     */
     protected function render_preview($module_name): void {
         ob_start();
         $this->layout_preview(array(
@@ -298,6 +300,10 @@ class Layout {
     }
 
     protected function render_extra_actions($module_name): void {
+        // Do not render this on nested flexible content layouts, only top-level ones
+        if (!str_starts_with($this->field['parent'], 'group')) {
+            return;
+        }
 
         echo <<<HTML
 			<div class="acf-dynamic-fc-extra-actions">
@@ -318,7 +324,7 @@ class Layout {
 
     /**
      * Layout preview. Handles the initial rendering of a layout in preview mode with saved data.
-	 * Previewing unsaved data is handled elsewhere - see BackendPreview.php
+     * Previewing unsaved data is handled elsewhere - see BackendPreview.php
      *
      * @param  array  $options
      *
@@ -379,10 +385,10 @@ class Layout {
 
         try {
             $file = TemplateHandler::get_template_path($layout['name']);
-			if($file && !is_dir($file)) {
-				$fields = get_row();
-				include $file;
-			}
+            if ($file && !is_dir($file)) {
+                $fields = get_row();
+                include $file;
+            }
         }
         catch (Exception $e) {
             error_log(sprintf(
@@ -468,38 +474,38 @@ class Layout {
      */
     public function enqueue_module_assets($field): void {
         foreach ($field['layouts'] as $module) {
-			try {
-				$name = Utils::kebab_case($module['name']);
-				$dir_path = TemplateHandler::get_template_path($name);
-				$dir_url = TemplateHandler::get_template_url($name);
+            try {
+                $name = Utils::kebab_case($module['name']);
+                $dir_path = TemplateHandler::get_template_path($name);
+                $dir_url = TemplateHandler::get_template_url($name);
 
-				// Look for CSS and JS in theme/modules/$name, kebab-cased
-				$style = "$dir_path/$name.css";
-				$script = "$dir_path/modules/$name/$name.js";
+                // Look for CSS and JS in theme/modules/$name, kebab-cased
+                $style = "$dir_path/$name.css";
+                $script = "$dir_path/modules/$name/$name.js";
 
-				if(file_exists($style)) {
-					wp_enqueue_style(
-						"module-$name-style",
-						"$dir_url/modules/$name/$name.css",
-						[],
-						filemtime($style)
-					);
-				}
+                if (file_exists($style)) {
+                    wp_enqueue_style(
+                        "module-$name-style",
+                        "$dir_url/modules/$name/$name.css",
+                        [],
+                        filemtime($style)
+                    );
+                }
 
-				if(file_exists($script)) {
-					wp_enqueue_script(
-						"module-$name-script",
-						"$dir_url/modules/$name/$name.js",
-						[],
-						filemtime($script),
-						true
-					);
-				}
-			}
-			catch (Exception $e) {
-				acf_add_admin_notice(sprintf('Error enqueuing module assets: %s', $e->getMessage()), 'error');
-				error_log(sprintf('Error enqueuing module assets: %s', $e->getMessage()));
-			}
+                if (file_exists($script)) {
+                    wp_enqueue_script(
+                        "module-$name-script",
+                        "$dir_url/modules/$name/$name.js",
+                        [],
+                        filemtime($script),
+                        true
+                    );
+                }
+            }
+            catch (Exception $e) {
+                acf_add_admin_notice(sprintf('Error enqueuing module assets: %s', $e->getMessage()), 'error');
+                error_log(sprintf('Error enqueuing module assets: %s', $e->getMessage()));
+            }
         }
     }
 

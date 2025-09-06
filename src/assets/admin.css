@@ -36,6 +36,9 @@
   text-decoration: none;
   color: inherit;
 }
+[data-nested=true] .acf-field[data-type=flexible_content] .acf-flexible-content .layout .acf-dynamic-fc-extra-actions {
+  display: none;
+}
 .acf-field[data-type=flexible_content] .acf-flexible-content .layout.active-layout .acf-dynamic-fc-extra-actions {
   background: rgba(34, 113, 177, 0.04);
 }

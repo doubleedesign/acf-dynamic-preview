@@ -2,15 +2,15 @@
  * global acf
  */
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 	// Initialise the custom buttons' event listeners on page load
 	initButtons($);
 
 	// When a new module is added to the page
-	acf.addAction('append', function(maybeModule) {
+	acf.addAction('append', function (maybeModule) {
 		// 'append' could also hit repeaters and such, so this is a proxy for "is this a flexible module?"
 		// Reinitialise button listeners - this probably isn't the most efficient, but it's fine for now
-		if(maybeModule[0].classList.contains('layout')) {
+		if (maybeModule[0].classList.contains('layout')) {
 			initButtons($);
 		}
 		// Default to edit mode
@@ -19,16 +19,16 @@ jQuery(document).ready(function($) {
 
 	// If certain WYSIWYG fields (e.g., my "copy" module) are already on the page but is empty,
 	// default them to edit mode
-	acf.addAction('load_field/type=wysiwyg', function(field) {
+	acf.addAction('load_field/type=wysiwyg', function (field) {
 		const moduleArea = field.$el.closest('.layout')[0];
-		if(moduleArea && moduleArea.dataset.layout === 'copy' && !field.val()) {
+		if (moduleArea && moduleArea.dataset.layout === 'copy' && !field.val()) {
 			moduleArea.dataset.mode = 'edit';
 		}
 	});
 
-	// Hack in a "Preview all" button because ACF doesn't provide any filters to add this in PHP
-	$('.acf-fc-collapse-all').after('<button type="button" class="acf-btn acf-btn-clear acf-btn-preview-all">Preview all</button>');
-	$('.acf-btn-preview-all').on('click', function(e) {
+	// Hack in a "Preview all" button on top-level flexible content field because ACF doesn't provide any filters to add this in PHP
+	$('.acf-postbox > .acf-fields > [data-type="flexible_content"] > .acf-input > .acf-flexible-content >.acf-fc-top-actions .acf-fc-collapse-all').after('<button type="button" class="acf-btn acf-btn-clear acf-btn-preview-all">Preview all</button>');
+	$('.acf-btn-preview-all').on('click', function (e) {
 		const modules = document.querySelectorAll('.layout');
 		modules.forEach(module => {
 			module.dataset.mode = 'preview';
@@ -36,7 +36,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// Switch all modules to edit mode when ACF native "collapse all" or "expand all" button is clicked
-	$('.acf-fc-collapse-all, .acf-fc-expand-all').on('click', function(e) {
+	$('.acf-fc-collapse-all, .acf-fc-expand-all').on('click', function (e) {
 		const modules = document.querySelectorAll('.layout');
 		modules.forEach(module => {
 			module.dataset.mode = 'edit';
@@ -46,7 +46,7 @@ jQuery(document).ready(function($) {
 });
 
 function initButtons($) {
-	$('[data-action="toggle-render-mode"]').on('click', function(e) {
+	$('[data-action="toggle-render-mode"]').on('click', function (e) {
 		e.preventDefault();
 
 		const isPreviewButton = e.currentTarget.dataset.toggleValue === 'preview';
@@ -54,7 +54,7 @@ function initButtons($) {
 		const moduleArea = e.currentTarget.closest('.layout');
 		const previewArea = moduleArea.querySelector('.acf-dynamic-fc-preview__content');
 
-		if(isPreviewButton) {
+		if (isPreviewButton) {
 			// Get all the field values within the current module area without submitting the form
 			const inputs = moduleArea.querySelectorAll('input, select, textarea');
 			const data = merge_sub_field_data(inputs);
@@ -75,15 +75,14 @@ function initButtons($) {
 						fields: data
 					})
 				},
-				success: function(response) {
-					if(response.success && response.data.html) {
+				success: function (response) {
+					if (response.success && response.data.html) {
 						// Replace the preview area's content with the returned HTML
 						previewArea.innerHTML = response.data.html;
 						// Remove error messages if any
 						const existingErrors = previewArea.querySelectorAll('.acf-notice');
 						existingErrors.forEach(error => error.remove());
-					}
-					else if(response.data.error) {
+					} else if (response.data.error) {
 						console.error(response.data.error);
 						// Clear previous errors
 						const existingErrors = previewArea.querySelectorAll('.acf-notice');
@@ -94,7 +93,7 @@ function initButtons($) {
 						message.innerText = response.data.error;
 					}
 				},
-				error: function(error) {
+				error: function (error) {
 					console.error(error);
 				}
 			});
@@ -102,7 +101,7 @@ function initButtons($) {
 			// Then switch to preview mode
 			moduleArea.dataset.mode = 'preview';
 		}
-		if(isEditButton) {
+		if (isEditButton) {
 			moduleArea.dataset.mode = 'edit';
 			moduleArea.classList.remove('-collapsed');
 		}
@@ -114,10 +113,10 @@ function merge_sub_field_data(inputs) {
 
 	// Note: inputs are a NodeList, not an array, so .map and such don't work directly
 	inputs.forEach(input => {
-		if(input.name) { // make sure we only process actual inputs
+		if (input.name) { // make sure we only process actual inputs
 			const obj = process_input_key_and_value(input.name, input.value);
 			// Check if object is actually an object before proceeding
-			if(obj && typeof obj === 'object' && !Array.isArray(obj)) {
+			if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
 				initial.push(obj);
 			}
 		}
@@ -145,10 +144,10 @@ function process_input_key_and_value(key, value = null) {
 			&& !['acf_fc_layout_custom_label', 'acf_fc_layout_disabled', 'acf_fc_layout'].includes(k);
 	})
 		// Slice off the first one, which is expected to be the overall flexible content field key after the initial filter
-	.slice(1, 10);
+		.slice(1, 10);
 
-	if(filteredKeys.length === 1) {
-		return { [filteredKeys[0]]: value };
+	if (filteredKeys.length === 1) {
+		return {[filteredKeys[0]]: value};
 	}
 
 	return build_nested_object(filteredKeys, value);
@@ -166,16 +165,16 @@ function build_nested_object(keys, value) {
 		const arr = [];
 		const index = parseInt(keys[1], 10);
 		arr[index] = build_nested_object(keys.slice(2), value);
-		return { [key]: arr };
+		return {[key]: arr};
 	} else {
-		return { [key]: build_nested_object(keys.slice(1), value) };
+		return {[key]: build_nested_object(keys.slice(1), value)};
 	}
 }
 
 function are_all_modules_in_preview_mode() {
 	const modules = document.querySelectorAll('.layout');
-	for(const module of modules) {
-		if(module.dataset.mode !== 'preview') {
+	for (const module of modules) {
+		if (module.dataset.mode !== 'preview') {
 			return false;
 		}
 	}

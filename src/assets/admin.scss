@@ -54,11 +54,17 @@
 				text-decoration: none;
 				color: inherit;
 			}
+
+			[data-nested="true"] & {
+				// Hide the "Add new layout" button for nested flexible content fields
+				// TODO: Stop it from rendering in the DOM at all
+				display: none;
+			}
 		}
 
 		&.active-layout {
 			.acf-dynamic-fc-extra-actions {
-				background: rgba(34,113,177,.04);
+				background: rgba(34, 113, 177, .04);
 
 				a {
 					color: white;
@@ -96,7 +102,6 @@
 		}
 
 		&__content {
-
 		}
 	}
 }
